@@ -2,7 +2,7 @@
     <div class="wrapper">
         <header class="header">
             <app-header>
-                <logo-item href="/" :src="logo" />
+                <logo-item href="/main" :src="logo" />
                 <nav class="links">
                     <link-item 
                         v-for="link in links"
@@ -65,7 +65,7 @@ export default {
           logo,
           links: [
               {
-                  href: '/',
+                  href: '/sdfdgfhvdf',
                   icon: home
               },
               {
