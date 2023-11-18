@@ -1,4 +1,4 @@
-# ls-hw-vue
+# gitogram-hw-ls
 
 ## Project setup
 ```
