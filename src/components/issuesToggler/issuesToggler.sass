@@ -1,0 +1,19 @@
+.toggler 
+    font-size: 14px
+    font-weight: 500
+    color: #292929
+    cursor: pointer
+    display: flex
+    align-items: center
+    margin-bottom: 10px
+
+    &::after 
+        content: ''
+        background: url('@/assets/img/arrow.png') center no-repeat
+        width: 16px
+        height: 16px
+    
+
+    &.show::after 
+        transform: rotate(180deg)
+    
