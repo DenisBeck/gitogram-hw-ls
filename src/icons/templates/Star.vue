@@ -13,8 +13,6 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-img
-    max-width: 100%
-    height: 100%
+<style lang="sass" src="./templates.sass" scoped>
+
 </style>

@@ -1,0 +1,88 @@
+.slide
+    width: 302px
+    border-radius: 8px
+    background: #fff
+    padding: 8px 0
+    display: flex
+    flex-direction: column
+    border: 1px solid #CACACA
+    opacity: 0.3
+
+    &-progress 
+        margin: 0 8px
+
+    &-user 
+        margin: 12px
+        height: 25px
+        font-size: 12px
+        pointer-events: none
+
+    &-content 
+        border-bottom: 1px solid #CACACA
+        border-top: 1px solid #CACACA
+        padding: 15px
+        height: 402px
+        overflow: auto
+        flex: 1 1 auto
+
+    &-image 
+        margin-inline: 15px
+        margin-bottom: 24px
+        border-radius: 4px
+        overflow: hidden
+
+    &-text
+        color: #404040
+        font-size: 14px
+        line-height: 1.6
+
+        p:not(:last-child) 
+            margin-bottom: 14px
+    
+    &-button 
+        margin: 24px auto
+        font-size: 14px
+
+.slide-active
+    width: 375px
+    opacity: 1
+
+    .slide-user 
+        height: 32px
+
+    .slide-content 
+        height: 500px
+
+    .slide-button
+        font-size: 16px
+        letter-spacing: -0.15px
+
+
+.slide-skeleton 
+    font-size: 0
+
+    .slide-image 
+        margin: 0 0 22px
+        background: #DEDEDE
+        height: 136px
+
+    &-text
+        margin-bottom: 18px
+        height: 60px
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+
+        &>div
+            height: 14px
+            background: #DEDEDE
+
+            &:nth-child(1)
+                width: 66%
+
+            &:nth-child(2)
+                width: 82%
+
+            &:nth-child(3)
+                width: 52%
+                

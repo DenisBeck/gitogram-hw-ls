@@ -1,16 +1,14 @@
 <template>
     <div class="feed">
-        <div class="container">
-            <users-item class="user-item" :avatar="feed.user.avatar" :name="feed.user.name" />
-            <slot name="feed-tech"></slot>
-            <issues-toggler @toggleChanged="toggleHandler" :show="showComments" />
-            <div v-if="showComments" class="feed-comment">
-                <p><span>joshua_l</span> Enable performance measuring in production, at the user's request</p>
-                <p><span>Camille</span> It's Impossible to Rename an Inherited Slot</p>
-                <p><span>Marselle</span> transition-group with flex parent causes removed items to fly</p>
-            </div>
-            <div class="feed-date">{{ formatDate }}</div>
+        <users-item class="user-item" :name="feed.owner.login" :src="feed.owner.avatar_url" />
+        <slot name="feed-tech"></slot>
+        <issues-toggler @toggle="toggleHandler" :isShow="showComments" />
+        <div v-if="showComments" class="feed-comment">
+            <p><span>joshua_l</span> Enable performance measuring in production, at the user's request</p>
+            <p><span>Camille</span> It's Impossible to Rename an Inherited Slot</p>
+            <p><span>Marselle</span> transition-group with flex parent causes removed items to fly</p>
         </div>
+        <div class="feed-date">{{ formatDate }}</div>
     </div>
 </template>
 
@@ -38,7 +36,8 @@ export default {
     },
     computed: {
         formatDate () {
-            return `${this.feed.date.getDate()} ${this.feed.date.toLocaleString('en', { month: 'long' })}`
+            const date = new Date(this.feed.created_at)
+            return `${date.getDate()} ${date.toLocaleString('en', { month: 'long' })}`
         }
     }
 }

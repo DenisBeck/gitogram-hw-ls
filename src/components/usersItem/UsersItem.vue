@@ -1,6 +1,9 @@
 <template>
     <a href="#" :class="[{[inStories]: isInStories}, 'user']">
-        <div class="avatar"><icon :name="avatar" /></div>
+        <div class="avatar">
+            <img v-if="src" :src="src" :alt="name" />
+            <icon v-else :name="avatar" />
+        </div>
         <div class="name">{{ name }}</div>
     </a>
 </template>
@@ -15,7 +18,7 @@ export default {
     props: {
         avatar: {
             type: String,
-            required: true
+            default: 'Andrew'
         },
         name: {
             type: String,
@@ -23,6 +26,9 @@ export default {
         },
         isInStories: {
             type: Boolean
+        },
+        src: {
+            type: String
         }
     },
     data () {

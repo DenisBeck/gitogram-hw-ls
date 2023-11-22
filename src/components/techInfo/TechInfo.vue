@@ -16,8 +16,8 @@ export default {
         Icon
     },
     props: {
-        stars: String,
-        forks: String
+        stars: Number,
+        forks: Number
     }
 }
 </script>

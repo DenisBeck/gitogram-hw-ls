@@ -26,7 +26,7 @@ export default {
                 {
                     id: '2',
                     href: '/about',
-                    src: 'Camille'
+                    src: 'Andrew'
                 },
                 {
                     id: '3',

@@ -1,13 +1,13 @@
 <template>
-    <img :src="fork" alt="fork">
+    <img :src="slideImage" alt="slide image">
 </template>
 
 <script>
-import fork from '@/assets/img/fork.png'
+import slideImage from '@/assets/img/slide-image.png'
 export default {
     data () {
         return {
-            fork
+            slideImage
         }
     }
 }

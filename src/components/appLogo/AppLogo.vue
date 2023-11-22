@@ -1,6 +1,6 @@
 <template>
     <div class="logo">
-        <a href="#" class="logo-icon">
+        <a href="#" :class="['logo-icon', {'light': isBackgroundDark}]">
             <icon name="Logo" />
         </a>
     </div>
@@ -12,6 +12,11 @@ export default {
     name: 'app-logo',
     components: {
         Icon
+    },
+    props: {
+        isBackgroundDark: {
+            type: Boolean
+        }
     }
 }
 </script>
