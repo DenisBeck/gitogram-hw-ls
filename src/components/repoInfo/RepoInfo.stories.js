@@ -1,17 +1,17 @@
-import TechInfo from './TechInfo.vue'
+import RepoInfo from './RepoInfo.vue'
 
 export default {
-    title: 'TechInfo',
-    component: TechInfo
+    title: 'RepoInfo',
+    component: RepoInfo
 }
 
 export const Default = {
     render: (args) => ({
-        components: { TechInfo },
+        components: { RepoInfo },
         setup () {
             return { args }
         },
-        template: '<tech-info v-bind="args" />'
+        template: '<repo-info v-bind="args" />'
     }),
     args: {
         stars: '156k',

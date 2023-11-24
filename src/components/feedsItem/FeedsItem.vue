@@ -1,7 +1,13 @@
 <template>
     <div class="feed">
         <users-item class="user-item" :name="feed.owner.login" :src="feed.owner.avatar_url" />
-        <slot name="feed-tech"></slot>
+        <div class="feed-repo">
+            <slot name="feed-repo"></slot>
+            <repo-info
+                :stars="feed.stargazers_count"
+                :forks="feed.forks_count"
+            />
+        </div>
         <issues-toggler @toggle="toggleHandler" :isShow="showComments" />
         <div v-if="showComments" class="feed-comment">
             <p><span>joshua_l</span> Enable performance measuring in production, at the user's request</p>
@@ -13,13 +19,15 @@
 </template>
 
 <script>
+import { RepoInfo } from '@/components/repoInfo'
 import { UsersItem } from '@/components/usersItem'
 import { IssuesToggler } from '@/components/issuesToggler'
 export default {
     name: 'feeds-item',
     components: {
         UsersItem,
-        IssuesToggler
+        IssuesToggler,
+        RepoInfo
     },
     props: {
         feed: Object

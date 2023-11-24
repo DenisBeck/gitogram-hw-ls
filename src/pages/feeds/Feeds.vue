@@ -17,15 +17,9 @@
             <div class="container">
                 <div v-if="feeds" class="feeds-list">
                     <feeds-item v-for="feed in feeds" :feed="feed" :key="feed.id" class="feed">
-                        <template #feed-tech>
-                            <div class="feed-tech">
-                                <h2 class="tech-title">{{ feed.name }}</h2>
-                                <div class="tech-desc">{{ feed.description }}</div>
-                                <tech-info
-                                    :stars="feed.stargazers_count"
-                                    :forks="feed.forks_count"
-                                />
-                            </div>
+                        <template #feed-repo>
+                            <h2 class="repo-title">{{ feed.name }}</h2>
+                            <div class="repo-desc">{{ feed.description }}</div>
                         </template>
                     </feeds-item>
                 </div>
@@ -36,7 +30,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import * as api from '@/api'
 
 import { AppHeader } from '@/components/appHeader'
 import { TopLinksList } from '@/components/topLinksList'
@@ -44,12 +38,10 @@ import { UsersItem } from '@/components/usersItem'
 import { AppLogo } from '@/components/appLogo'
 
 import { FeedsItem } from '@/components/feedsItem'
-import { TechInfo } from '@/components/techInfo'
 export default {
     name: 'Feeds',
     components: {
         FeedsItem,
-        TechInfo,
         AppHeader,
         AppLogo,
         TopLinksList,
@@ -60,28 +52,13 @@ export default {
             feeds: []
         }
     },
-    methods: {
-        async fetchRepos () {
-            const getTwoDigitValue = (value) => {
-                return value < 10 ? '0' + value : value
-            }
-            const date = new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
-            const formatDate = `${date.getFullYear()}-${getTwoDigitValue(date.getMonth() + 1)}-${getTwoDigitValue(date.getDate())}`
-            const paramsString = new URLSearchParams()
-            paramsString.set('order', 'desc')
-            paramsString.set('sort', 'start')
-            paramsString.set('q', `language:javascript created:>${formatDate}`)
-            paramsString.set('per_page', '10')
-            try {
-                const response = await axios.get('https://api.github.com/search/repositories?' + paramsString.toString())
-                this.feeds = response.data.items
-            } catch (e) {
-                alert('Ошибка', e)
-            }
+    async created () {
+        try {
+            const response = await api.repos.getRepos()
+            this.feeds = response.data.items
+        } catch (e) {
+            alert('Ошибка', e)
         }
-    },
-    mounted () {
-        this.fetchRepos()
     },
     computed: {
         feedOwners () {

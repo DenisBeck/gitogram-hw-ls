@@ -1,5 +1,5 @@
 <template>
-    <div class="tech-info">
+    <div class="repo-info">
         <div class="star-key"><icon name="Star" />Star</div>
         <div class="star-value">{{ stars }}</div>
         <div class="fork-key"><icon name="Fork" />Fork</div>
@@ -22,6 +22,6 @@ export default {
 }
 </script>
 
-<style lang="sass" src="./techInfo.sass" scoped>
+<style lang="sass" src="./repoInfo.sass" scoped>
 
 </style>

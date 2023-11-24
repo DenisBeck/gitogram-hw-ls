@@ -2,7 +2,10 @@ import AppButton from './AppButton.vue'
 
 export default {
     title: 'Button',
-    component: { AppButton }
+    component: { AppButton },
+    argTypes: {
+        onClick: { action: 'click' }
+    }
 }
 
 export const Default = {

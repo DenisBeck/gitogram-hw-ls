@@ -8,38 +8,14 @@ export default {
 export const Default = {
     render: (args) => ({
         components: { ProgressBar },
-        setup () {
+        data () {
             return { args }
         },
-        template: '<progress-bar v-bind="args" />'
+        template: '<progress-bar @onFinish="args.onFinish" />'
     }),
-    args: {
-
-    }
-}
-
-export const ProgressComplete = {
-    render: (args) => ({
-        components: { ProgressBar },
-        setup () {
-            return { args }
-        },
-        template: '<progress-bar v-bind="args" />'
-    }),
-    args: {
-        progress: '100%'
-    }
-}
-
-export const NoProgress = {
-    render: (args) => ({
-        components: { ProgressBar },
-        setup () {
-            return { args }
-        },
-        template: '<progress-bar v-bind="args" />'
-    }),
-    args: {
-        progress: '0'
+    argTypes: {
+        onFinish: {
+            action: 'onFinish'
+        }
     }
 }
