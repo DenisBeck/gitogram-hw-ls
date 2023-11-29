@@ -1,6 +1,6 @@
 <template>
     <div class="feed">
-        <users-item class="user-item" :name="feed.owner.login" :src="feed.owner.avatar_url" />
+        <users-item class="user-item" :id="feed.id" :name="feed.owner.login" :src="feed.owner.avatar_url" />
         <div class="feed-repo">
             <slot name="feed-repo"></slot>
             <repo-info
