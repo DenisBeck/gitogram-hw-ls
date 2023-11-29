@@ -1,0 +1,66 @@
+@import '../../styles/variables'
+    
+.container
+    position: relative
+    
+.wrapper 
+    background: #000
+
+.header 
+    border-bottom: none
+
+.main
+    display: flex
+    align-items: center
+    justify-content: center
+
+.slides-list 
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: $slidesGap
+    transition: all 0.3s ease 0s
+
+.slides-margin 
+    margin-right: $slidesGap + $slideWidth
+
+.slider-controls
+    width: $slideWidth + 188px
+    left: 50%
+    position: absolute
+    top: 50%
+    transform: translate(-50%, -50%)
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.slider-control-item
+    width: 44px
+    height: 44px
+    border-radius: 50%
+    display: flex
+    align-items: center
+    justify-content: center
+    cursor: pointer
+    transition: all 0.3s ease 0s
+
+    @media(any-hover) 
+        &:hover 
+            color: #31AE54
+        
+    &.right 
+        transform: rotate(180deg)
+        margin-right: 0
+    
+    &.left
+        margin-left: 0
+
+    &.hide
+        opacity: 0
+        visibility: hidden
+        pointer-events: none
+
+.feeds-loading
+    height: 100px
+    width: 100px
+    margin: 0 auto

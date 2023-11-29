@@ -1,8 +1,8 @@
 <template>
     <div class="logo">
-        <a href="#" :class="['logo-icon', {'light': isBackgroundDark}]">
+        <router-link to="/" :class="['logo-icon', {'light': isBackgroundDark}]">
             <icon name="Logo" />
-        </a>
+        </router-link>
     </div>
 </template>
 

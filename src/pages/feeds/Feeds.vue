@@ -5,39 +5,40 @@
                 <app-logo />
                 <top-links-list />
             </template>
-            <template #bottom-header>
+            <template #bottom-header v-if="feed.data">
                 <ul class="users-list">
-                    <li class="users-item" v-for="user in feedOwners" :key="user.id">
-                        <users-item isInStories :name="user.login" :src="user.avatar_url" />
+                    <li class="users-item" v-for="feed in feed.data" :key="feed.owner.id">
+                        <users-item isInStories :id="feed.id" :name="feed.owner.login" :src="feed.owner.avatar_url" />
                     </li>
                 </ul>
             </template>
         </app-header>
         <main class="main">
             <div class="container">
-                <div v-if="feeds" class="feeds-list">
-                    <feeds-item v-for="feed in feeds" :feed="feed" :key="feed.id" class="feed">
+                <div v-if="feed.loading" class="feeds-loading"><icon name="Spinner" /></div>
+                <div v-else-if="feed.data" class="feeds-list">
+                    <feeds-item v-for="feed in feed.data" :feed="feed" :key="feed.id" class="feed">
                         <template #feed-repo>
                             <h2 class="repo-title">{{ feed.name }}</h2>
                             <div class="repo-desc">{{ feed.description }}</div>
                         </template>
                     </feeds-item>
                 </div>
-                <div v-else class="feeds-empty">Список материалов пуст</div>
+                <div v-else-if="feed.error" class="feeds-empty">{{ feed.error }}</div>
             </div>
         </main>
     </div>
 </template>
 
 <script>
-import * as api from '@/api'
+import { mapState, mapActions } from 'vuex'
 
 import { AppHeader } from '@/components/appHeader'
 import { TopLinksList } from '@/components/topLinksList'
 import { UsersItem } from '@/components/usersItem'
 import { AppLogo } from '@/components/appLogo'
-
 import { FeedsItem } from '@/components/feedsItem'
+import { Icon } from '@/icons'
 export default {
     name: 'Feeds',
     components: {
@@ -45,25 +46,21 @@ export default {
         AppHeader,
         AppLogo,
         TopLinksList,
-        UsersItem
-    },
-    data () {
-        return {
-            feeds: []
-        }
-    },
-    async created () {
-        try {
-            const response = await api.repos.getRepos()
-            this.feeds = response.data.items
-        } catch (e) {
-            alert('Ошибка', e)
-        }
+        UsersItem,
+        Icon
     },
     computed: {
-        feedOwners () {
-            return this.feeds.map(feed => feed.owner)
-        }
+        ...mapState({
+            feed: state => state.feed.feed
+        })
+    },
+    methods: {
+        ...mapActions({
+            fetchRepos: 'feed/fetchRepos'
+        })
+    },
+    created () {
+        this.fetchRepos()
     }
 }
 </script>

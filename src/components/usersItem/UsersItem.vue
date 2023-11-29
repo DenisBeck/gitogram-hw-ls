@@ -1,11 +1,11 @@
 <template>
-    <a href="#" :class="[{[inStories]: isInStories}, 'user']">
+    <router-link :to="{ name: 'stories', params: { routeId: id || 0 } }" :class="[{[inStories]: isInStories}, 'user']">
         <div class="avatar">
             <img v-if="src" :src="src" :alt="name" />
             <icon v-else :name="avatar" />
         </div>
         <div class="name">{{ name }}</div>
-    </a>
+    </router-link>
 </template>
 
 <script>
@@ -16,6 +16,9 @@ export default {
         Icon
     },
     props: {
+        id: {
+            type: Number
+        },
         avatar: {
             type: String,
             default: 'Andrew'

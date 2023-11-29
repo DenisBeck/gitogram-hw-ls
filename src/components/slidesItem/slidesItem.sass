@@ -1,5 +1,9 @@
+@import '../../styles/variables'
+    
 .slide
-    width: 302px
+    width: $slideWidth
+    height: 538px
+    flex: 1 0 auto
     border-radius: 8px
     background: #fff
     padding: 8px 0
@@ -7,6 +11,7 @@
     flex-direction: column
     border: 1px solid #CACACA
     opacity: 0.3
+    transition: all 0.3s ease 0s
 
     &-progress 
         margin: 0 8px
@@ -17,7 +22,7 @@
         font-size: 12px
         pointer-events: none
 
-    &-content 
+    &-container
         border-bottom: 1px solid #CACACA
         border-top: 1px solid #CACACA
         padding: 15px
@@ -39,12 +44,16 @@
         p:not(:last-child) 
             margin-bottom: 14px
     
+    &-content 
+        overflow: hidden
+
     &-button 
         margin: 24px auto
         font-size: 14px
 
 .slide-active
-    width: 375px
+    transform: scale(1.24)
+    margin-inline: 46px
     opacity: 1
 
     .slide-user 
@@ -59,9 +68,8 @@
 
 
 .slide-skeleton 
-    font-size: 0
 
-    .slide-image 
+    &-image 
         margin: 0 0 22px
         background: #DEDEDE
         height: 136px

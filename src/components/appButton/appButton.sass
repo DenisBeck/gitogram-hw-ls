@@ -15,14 +15,40 @@
 
     @media(any-hover) 
         &:hover:not(:disabled) 
-            transform: scale(1.03)
-
-    &:active
-        transform: scale(1)
+            background: rgba(#31AE54, 0.5)
 
     &:disabled
-        cursor: not-allowed
+        cursor: default
         background: rgba(#31AE54, 0.5)
+
+    &.close
+        background: transparent 
+        padding: 0
+        width: 50px
+        height: 100%
+        gap: 0
+
+        &::before,
+        &::after 
+            content: ''
+            height: 2px
+            width: 100%
+            background: #fff
+
+        &::before
+            transform: translateX(50%) rotate(45deg)
+
+        &::after
+            transform: translateX(-50%) rotate(-45deg)
+
+        @media(any-hover) 
+            &:hover 
+                opacity: 0.5
+                background: transparent 
+                color: #fff
+
+            
+        
         
         
     

@@ -1,5 +1,5 @@
 <template>
-    <button :disabled="disabled" class="app-button">
+    <button :disabled="disabled" @click="handleClick" :class="['app-button', {'close': close}]">
         {{ label }}
     </button>
 </template>
@@ -7,14 +7,22 @@
 <script>
 export default {
     name: 'app-button',
+    emits: ['close'],
     props: {
         label: {
-            type: String,
-            required: true
+            type: String
         },
         disabled: {
             type: Boolean,
             default: false
+        },
+        close: {
+            type: Boolean
+        }
+    },
+    methods: {
+        handleClick () {
+            this.$emit('close')
         }
     }
 }
