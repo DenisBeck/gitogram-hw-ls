@@ -1,13 +1,14 @@
 <template>
     <button :disabled="disabled" @click="handleClick" :class="['app-button', {'close': close}]">
         {{ label }}
+        <slot></slot>
     </button>
 </template>
 
 <script>
 export default {
     name: 'app-button',
-    emits: ['close'],
+    emits: ['click'],
     props: {
         label: {
             type: String
@@ -22,7 +23,7 @@ export default {
     },
     methods: {
         handleClick () {
-            this.$emit('close')
+            this.$emit('click')
         }
     }
 }

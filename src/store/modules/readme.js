@@ -13,7 +13,7 @@ export const readme = {
     },
     getters: {
         isStateInit (state) {
-            return state.owner && state.repo
+            return !!(state.owner && state.repo)
         }
     },
     mutations: {

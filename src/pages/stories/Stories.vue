@@ -3,7 +3,7 @@
         <app-header>
             <template #top-header>
                 <app-logo isBackgroundDark />
-                <app-button close @close="goToHome" />
+                <app-button close @click="goToHome" />
             </template>
         </app-header>
         <main class="main">
@@ -65,9 +65,11 @@ export default {
     computed: {
         ...mapState({
             feed: state => state.feed.feed
+            // feed: state => state.starred.starred
         }),
         ...mapGetters({
             storiesCount: 'feed/getFeedsCount'
+            // storiesCount: 'starred/getStarredCount'
         }),
         styleSlideShift () {
             return reactive({
@@ -87,6 +89,7 @@ export default {
     methods: {
         ...mapActions({
             fetchRepos: 'feed/fetchRepos'
+            // fetchStarred: 'starred/fetchStarred'
         }),
         initActiveSlide () {
             if (this.feed.data && this.routeId) {
@@ -104,7 +107,7 @@ export default {
             this.slideShift++
         },
         goToHome () {
-            this.$router.push('/')
+            this.$router.push({ name: 'main', params: {} })
         },
         changeActive () {
             if (this.slideShift === this.maxValue) {
@@ -117,6 +120,7 @@ export default {
     created () {
         if (!this.feed.data) {
             this.fetchRepos()
+            // this.fetchStarred()
         }
         this.initActiveSlide()
     },

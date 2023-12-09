@@ -1,9 +1,20 @@
 <template>
     <ul class="top-menu">
-        <li class="top-menu-item" v-for="link in links" :key="link.id">
-            <a class="top-menu-link" :href="link.href">
-                <icon :name="link.src" />
-            </a>
+        <li class="top-menu-item">
+            <router-link to="/" class="top-menu-link">
+                <icon name="Home" />
+            </router-link>
+        </li>
+        <li class="top-menu-item">
+            <router-link to="/" class="top-menu-link">
+                <img v-if="avatar" :src="avatar" alt="name" />
+                <icon v-else name="Andrew" />
+            </router-link>
+        </li>
+        <li class="top-menu-item">
+            <router-link @click="logout" to="/auth" class="top-menu-link">
+                <icon name="Out" />
+            </router-link>
         </li>
     </ul>
 </template>
@@ -15,25 +26,11 @@ export default {
     components: {
         Icon
     },
-    data () {
-        return {
-            links: [
-                {
-                    id: '1',
-                    href: '/sdfdgfhvdf',
-                    src: 'Home'
-                },
-                {
-                    id: '2',
-                    href: '/about',
-                    src: 'Andrew'
-                },
-                {
-                    id: '3',
-                    href: '/dfdsf',
-                    src: 'Out'
-                }
-            ]
+    props: ['avatar'],
+    methods: {
+        logout () {
+            localStorage.removeItem('token')
+            window.location.reload()
         }
     }
 }

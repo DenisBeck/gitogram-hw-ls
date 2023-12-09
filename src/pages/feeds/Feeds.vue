@@ -3,35 +3,38 @@
         <app-header>
             <template #top-header>
                 <app-logo />
-                <top-links-list />
+                <top-links-list v-if="isAuth" :avatar="user.data.avatar_url" />
+                <top-links-list v-else />
             </template>
             <template #bottom-header v-if="feed.data">
                 <ul class="users-list">
                     <li class="users-item" v-for="feed in feed.data" :key="feed.owner.id">
-                        <users-item isInStories :id="feed.id" :name="feed.owner.login" :src="feed.owner.avatar_url" />
+                        <router-link :to="{ name: 'story', params: { routeId: feed.id || 0 } }">
+                            <users-item isInStories  :name="feed.owner.login" :src="feed.owner.avatar_url" />
+                        </router-link>
                     </li>
                 </ul>
             </template>
         </app-header>
         <main class="main">
             <div class="container">
-                <div v-if="feed.loading" class="feeds-loading"><icon name="Spinner" /></div>
-                <div v-else-if="feed.data" class="feeds-list">
-                    <feeds-item v-for="feed in feed.data" :feed="feed" :key="feed.id" class="feed">
+                <div v-if="starred.loading" class="feeds-loading"><icon name="Spinner" /></div>
+                <div v-else-if="starred.data" class="feeds-list">
+                    <feeds-item v-for="starred in starred.data" :feed="starred" :key="starred.id" class="feed">
                         <template #feed-repo>
-                            <h2 class="repo-title">{{ feed.name }}</h2>
-                            <div class="repo-desc">{{ feed.description }}</div>
+                            <h2 class="repo-title">{{ starred.name }}</h2>
+                            <div class="repo-desc">{{ starred.description }}</div>
                         </template>
                     </feeds-item>
                 </div>
-                <div v-else-if="feed.error" class="feeds-empty">{{ feed.error }}</div>
+                <div v-else-if="starred.error" class="feeds-empty">{{ starred.error }}</div>
             </div>
         </main>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 import { AppHeader } from '@/components/appHeader'
 import { TopLinksList } from '@/components/topLinksList'
@@ -51,15 +54,24 @@ export default {
     },
     computed: {
         ...mapState({
-            feed: state => state.feed.feed
+            feed: state => state.feed.feed,
+            starred: state => state.starred.starred,
+            user: state => state.user.user
+        }),
+        ...mapGetters({
+            isAuth: 'user/isAuth'
         })
     },
     methods: {
         ...mapActions({
-            fetchRepos: 'feed/fetchRepos'
+            fetchRepos: 'feed/fetchRepos',
+            fetchStarred: 'starred/fetchStarred',
+            fetchUser: 'user/fetchUser'
         })
     },
-    created () {
+    async created () {
+        this.fetchUser()
+        this.fetchStarred()
         this.fetchRepos()
     }
 }

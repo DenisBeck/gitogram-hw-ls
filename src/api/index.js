@@ -1,2 +1,6 @@
 export * as repos from './rest/repos.js'
 export * as readme from './rest/readme.js'
+export * as issues from './rest/issues.js'
+export * as likes from './rest/likes.js'
+export * as starred from './rest/starred.js'
+export * as user from './rest/user.js'

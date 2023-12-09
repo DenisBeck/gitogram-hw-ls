@@ -8,9 +8,3 @@ export const getRepoReadme = (owner, repo) => {
         }
     })
 }
-
-// return axios({
-//     method: 'GET',
-//     baseURL: 'https://api.github.com',
-//     url: `/repos/{${owner}}/{${repo}}/readme`
-// })

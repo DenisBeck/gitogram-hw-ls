@@ -1,14 +1,17 @@
 import { Feeds } from '@/pages/feeds'
 import { Stories } from '@/pages/stories'
 import { NotFound } from '@/pages/notFound'
+import { Auth } from '@/pages/auth'
 
 export default [
     {
         path: '/',
+        name: 'main',
         component: Feeds
     },
     {
-        path: '/stories/',
+        path: '/stories',
+        name: 'stories',
         component: Stories,
         props: true
     },
@@ -16,10 +19,15 @@ export default [
         path: '/stories/:routeId(\\d+)',
         component: Stories,
         props: true,
-        name: 'stories'
+        name: 'story'
     },
     {
         path: '/:pathMatch(.*)',
         component: NotFound
+    },
+    {
+        path: '/auth',
+        name: 'auth',
+        component: Auth
     }
 ]

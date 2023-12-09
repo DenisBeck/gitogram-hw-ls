@@ -16,3 +16,66 @@
     main
         flex: 1 1 auto
 
+.skeleton 
+    &-image 
+        margin: 0 0 22px
+        background: #DEDEDE
+        height: 136px
+        position: relative
+        box-shadow: 0 2px 10px 0 rgba(0 0 0 / 20%)
+        overflow: hidden
+
+        &::before 
+            content: ""
+            display: block
+            position: absolute
+            left: -100%
+            top: 0
+            height: 100%
+            width: 80%
+            background: linear-gradient(to right, transparent 0%, rgba(0 0 0 / 20%) 50%, transparent 100%)
+            animation: load 1s cubic-bezier(0.4, 0, 0.2, 1) infinite
+
+    &-text
+        margin-bottom: 18px
+        height: 60px
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+
+        &>div
+            height: 14px
+            background: #DEDEDE
+            position: relative
+            box-shadow: 0 2px 10px 0 rgba(0 0 0 / 20%)
+            overflow: hidden
+
+            &:nth-child(1)
+                width: 66%
+
+            &:nth-child(2)
+                width: 82%
+
+            &:nth-child(3)
+                width: 52%
+            &::before 
+                content: ""
+                display: block
+                position: absolute
+                left: -100%
+                top: 0
+                height: 100%
+                width: 80%
+                background: linear-gradient(to right, transparent 0%, rgba(0 0 0 / 20%) 50%, transparent 100%)
+                animation: load 1s cubic-bezier(0.4, 0, 0.2, 1) infinite
+    
+
+@keyframes load 
+    from 
+        left: -100%
+    
+
+    to 
+        left: 100%
+    
+

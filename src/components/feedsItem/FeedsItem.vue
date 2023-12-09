@@ -9,16 +9,29 @@
             />
         </div>
         <issues-toggler @toggle="toggleHandler" :isShow="showComments" />
-        <div v-if="showComments" class="feed-comment">
-            <p><span>joshua_l</span> Enable performance measuring in production, at the user's request</p>
-            <p><span>Camille</span> It's Impossible to Rename an Inherited Slot</p>
-            <p><span>Marselle</span> transition-group with flex parent causes removed items to fly</p>
+        <div v-show="showComments" class="feed-comment">
+            <div v-if="issues.loading" class="skeleton">
+                <div class="skeleton-text">
+                    <div /><div /><div />
+                </div>
+                <div class="skeleton-text">
+                    <div /><div /><div />
+                </div>
+            </div>
+            <div v-else-if="issues.data && currentIssues" class="issues-content">
+                <div v-for="issue in currentIssues" :key="issue.id" class="issues-item">
+                    <p><span>{{ issue.user.login }}</span> {{ issue.title }}</p>
+                </div>
+            </div>
+            <div v-else-if="issues.error">{{ issues.error }}</div>
         </div>
         <div class="feed-date">{{ formatDate }}</div>
     </div>
 </template>
 
 <script>
+import { mapActions, mapState, mapGetters } from 'vuex'
+
 import { RepoInfo } from '@/components/repoInfo'
 import { UsersItem } from '@/components/usersItem'
 import { IssuesToggler } from '@/components/issuesToggler'
@@ -34,19 +47,51 @@ export default {
     },
     data () {
         return {
-            showComments: true
-        }
-    },
-    methods: {
-        toggleHandler () {
-            this.showComments = !this.showComments
+            showComments: false,
+            currentIssues: null
         }
     },
     computed: {
+        ...mapState({
+            issues: state => state.issues.issues
+        }),
+        ...mapGetters({
+            isStateInit: 'issues/isStateInit'
+        }),
         formatDate () {
             const date = new Date(this.feed.created_at)
             return `${date.getDate()} ${date.toLocaleString('en', { month: 'long' })}`
         }
+    },
+    methods: {
+        ...mapActions({
+            fetchIssues: 'issues/fetchIssues'
+        }),
+        toggleHandler () {
+            this.showComments = !this.showComments
+        },
+        async getCurrentIssues () {
+            if (!this.feed || !this.showComments) return
+
+            const current = this.issues.data.find(item => this.feed.owner.login === item.owner)
+            if (current) {
+                this.currentIssues = current.body
+            } else {
+                this.$store.commit('issues/SET_OWNER', this.feed.owner.login)
+                this.$store.commit('issues/SET_REPO', this.feed.name)
+                await this.fetchIssues()
+                this.currentIssues = this.issues.data.find(item => item.owner === this.feed.owner.login).body
+            }
+        }
+    },
+    created () {
+        this.getCurrentIssues()
+    },
+    watch: {
+        showComments () {
+            this.getCurrentIssues()
+        },
+        'issues.loading': 'getCurrentIssues'
     }
 }
 </script>
