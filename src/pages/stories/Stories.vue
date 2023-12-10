@@ -17,6 +17,7 @@
                             :key="slide.id"
                             :story="slide"
                             @changeActive="changeActive"
+                            :starred="starred"
                         />
                     </div>
                 </div>
@@ -64,8 +65,8 @@ export default {
     props: ['routeId'],
     computed: {
         ...mapState({
-            feed: state => state.feed.feed
-            // feed: state => state.starred.starred
+            feed: state => state.feed.feed,
+            starred: state => state.starred.starred
         }),
         ...mapGetters({
             storiesCount: 'feed/getFeedsCount'
@@ -88,8 +89,8 @@ export default {
     },
     methods: {
         ...mapActions({
-            fetchRepos: 'feed/fetchRepos'
-            // fetchStarred: 'starred/fetchStarred'
+            fetchRepos: 'feed/fetchRepos',
+            fetchStarred: 'starred/fetchStarred'
         }),
         initActiveSlide () {
             if (this.feed.data && this.routeId) {
@@ -120,8 +121,8 @@ export default {
     created () {
         if (!this.feed.data) {
             this.fetchRepos()
-            // this.fetchStarred()
         }
+        this.fetchStarred()
         this.initActiveSlide()
     },
     watch: {

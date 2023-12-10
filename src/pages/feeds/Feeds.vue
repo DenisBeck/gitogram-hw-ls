@@ -70,9 +70,9 @@ export default {
         })
     },
     async created () {
-        this.fetchUser()
-        this.fetchStarred()
-        this.fetchRepos()
+        await this.fetchUser()
+        await this.fetchStarred()
+        await this.fetchRepos()
     }
 }
 </script>

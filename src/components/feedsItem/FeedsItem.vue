@@ -70,7 +70,7 @@ export default {
         toggleHandler () {
             this.showComments = !this.showComments
         },
-        async getCurrentIssues () {
+        async setCurrentIssues () {
             if (!this.feed || !this.showComments) return
 
             const current = this.issues.data.find(item => this.feed.owner.login === item.owner)
@@ -85,13 +85,13 @@ export default {
         }
     },
     created () {
-        this.getCurrentIssues()
+        this.setCurrentIssues()
     },
     watch: {
         showComments () {
-            this.getCurrentIssues()
+            this.setCurrentIssues()
         },
-        'issues.loading': 'getCurrentIssues'
+        'issues.loading': 'setCurrentIssues'
     }
 }
 </script>

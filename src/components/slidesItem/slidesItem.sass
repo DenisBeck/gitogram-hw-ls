@@ -59,8 +59,14 @@
         letter-spacing: -0.15px
         height: 56px
 
-        &.following 
-            background: #9E9E9E
+.following 
+    background: #9E9E9E
+    &:disabled
+        background: rgba(#9E9E9E, 0.5)
+
+    @media(any-hover) 
+        &:hover:not(:disabled) 
+            background: rgba(#9E9E9E, 0.5)
 
 .button-loader
     display: flex

@@ -15,7 +15,7 @@
             <div v-else-if="readme.data" class="slide-content" ref="readmeContainer" />
             <div v-else-if="readme.error && active">{{ readme.error }}</div>
         </div>
-        <app-button @click="toggleFollow" :class="['slide-button', {'following': active && likes.data || likes.loading}]" :label="label">
+        <app-button @click="toggleFollow" :disabled="!active" :class="['slide-button', {'following': following || likes.loading}]" :label="label">
             <span v-if="likes.loading && active" class="button-loader"><icon class="button-loader" name="Loader"></icon></span>
         </app-button>
     </div>
@@ -37,7 +37,12 @@ export default {
         AppButton,
         Icon
     },
-    props: ['story', 'active'],
+    data () {
+        return {
+            following: this.starred.data.some(item => item === this.story)
+        }
+    },
+    props: ['story', 'active', 'starred'],
     emits: ['changeActive'],
     computed: {
         ...mapState({
@@ -45,12 +50,13 @@ export default {
             likes: state => state.likes.likes
         }),
         ...mapGetters({
-            isStateInit: 'readme/isStateInit'
+            isReadmeStateInit: 'readme/isStateInit',
+            isLikesStateInit: 'likes/isStateInit'
         }),
         label () {
-            if (this.active && this.likes.loading) {
+            if (this.likes.loading && this.active) {
                 return ''
-            } else if (this.active && this.likes.data) {
+            } else if (this.following) {
                 return 'unfollow'
             } else {
                 return 'follow'
@@ -70,7 +76,7 @@ export default {
             if (this.story) {
                 this.$store.commit('readme/SET_OWNER', this.story.owner.login)
                 this.$store.commit('readme/SET_REPO', this.story.name)
-                if (this.active && this.isStateInit) {
+                if (this.active && this.isReadmeStateInit) {
                     this.fetchReadme()
                 }
             }
@@ -81,19 +87,23 @@ export default {
             }
         },
         toggleFollow () {
+            this.following = !this.following
+        },
+        setCurrentFollowStatus () {
             if (!this.story) return
 
-            this.$store.commit('likes/SET_OWNER', this.story.owner.login)
-            this.$store.commit('likes/SET_REPO', this.story.name)
-            if (this.isStateInit) {
-                if (this.likes.data) {
-                    this.deleteLike()
-                } else {
+            if (!this.likes.data.find(item => item.owner === this.story.owner.login)) {
+                this.$store.commit('likes/SET_OWNER', this.story.owner.login)
+                this.$store.commit('likes/SET_REPO', this.story.name)
+            }
+            if (this.isLikesStateInit) {
+                if (this.following) {
                     this.putLike()
+                } else {
+                    this.deleteLike()
                 }
             }
         }
-
     },
     created () {
         this.getReadme()
@@ -104,6 +114,9 @@ export default {
     watch: {
         active () {
             this.getReadme()
+        },
+        following () {
+            this.setCurrentFollowStatus()
         }
     }
 
