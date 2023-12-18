@@ -2,6 +2,8 @@ import { Feeds } from '@/pages/feeds'
 import { Stories } from '@/pages/stories'
 import { NotFound } from '@/pages/notFound'
 import { Auth } from '@/pages/auth'
+import { Profile } from '@/pages/profile'
+import { Followers } from '@/pages/followers'
 
 export default [
     {
@@ -29,5 +31,15 @@ export default [
         path: '/auth',
         name: 'auth',
         component: Auth
+    },
+    {
+        path: '/profile',
+        name: 'profile',
+        component: Profile
+    },
+    {
+        path: '/followers',
+        name: 'followers',
+        component: Followers
     }
 ]

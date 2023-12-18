@@ -20,7 +20,7 @@
             <div class="container">
                 <div v-if="starred.loading" class="feeds-loading"><icon name="Spinner" /></div>
                 <div v-else-if="starred.data" class="feeds-list">
-                    <feeds-item v-for="starred in starred.data" :feed="starred" :key="starred.id" class="feed">
+                    <feeds-item main v-for="starred in starred.data" :feed="starred" :key="starred.id" class="feed">
                         <template #feed-repo>
                             <h2 class="repo-title">{{ starred.name }}</h2>
                             <div class="repo-desc">{{ starred.description }}</div>
@@ -56,7 +56,8 @@ export default {
         ...mapState({
             feed: state => state.feed.feed,
             starred: state => state.starred.starred,
-            user: state => state.user.user
+            user: state => state.user.user,
+            likes: state => state.likes.likes
         }),
         ...mapGetters({
             isAuth: 'user/isAuth'
@@ -73,6 +74,9 @@ export default {
         await this.fetchUser()
         await this.fetchStarred()
         await this.fetchRepos()
+    },
+    watch: {
+        'likes.data': 'fetchStarred'
     }
 }
 </script>

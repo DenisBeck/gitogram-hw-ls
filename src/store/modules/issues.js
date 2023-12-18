@@ -25,6 +25,7 @@ export const issues = {
         },
         SET_ISSUES_DATA (state, payload) {
             state.issues.data = [...state.issues.data, payload]
+            // state.issues.data = payload
         },
         SET_ISSUES_LOADING (state, payload) {
             state.issues.loading = payload

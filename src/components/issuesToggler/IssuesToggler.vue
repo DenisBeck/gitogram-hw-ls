@@ -1,8 +1,8 @@
 <template>
-    <div :class="[{['show']: !isShow}, 'toggler']" @click="toggleClick">
+    <button :class="[{['show']: !isShow}, 'toggler']" @click="toggleClick">
         <span class="toggler-text" v-if="isShow">Hide issues<span class="toggler-icon"><icon name="Arrow" /></span></span>
         <span class="toggler-text" v-else>View issues<span class="toggler-icon"><icon name="Arrow" /></span></span>
-    </div>
+    </button>
 </template>
 
 <script>

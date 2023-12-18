@@ -4,7 +4,13 @@
             <img v-if="src" :src="src" :alt="name" />
             <icon v-else :name="avatar" />
         </div>
-        <div class="name">{{ name }}</div>
+        <div class="info">
+            <div class="name">{{ name }}</div>
+            <div v-if="stats" class="stats">
+                <div class="reposts">54 reposts</div>
+                <div class="watchers">834 <router-link to="/followers">watchers</router-link></div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -29,6 +35,9 @@ export default {
         },
         src: {
             type: String
+        },
+        stats: {
+            type: Boolean
         }
     },
     data () {

@@ -29,7 +29,7 @@ export default {
             const params = new URLSearchParams()
 
             params.append('client_id', clientId)
-            params.append('scope', 'repo:status read:user user:follow')
+            params.append('scope', 'repo:status public_repo read:user user:follow')
 
             window.location.href = `${githubAuthApi}?${params}`
         }
@@ -51,7 +51,7 @@ export default {
 
                 const { token } = await response.json()
                 localStorage.setItem('token', token)
-                this.$router.push('/')
+                window.location.href = '/'
             } catch (e) {
                 console.log(e)
             }

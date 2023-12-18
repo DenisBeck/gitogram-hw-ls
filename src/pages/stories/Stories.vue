@@ -12,12 +12,13 @@
                 <div v-else-if="feed.data" class="slider-container">
                     <div :class="['slides-list', {'slides-margin': isStoriesCountEven}]" :style="styleSlideShift">
                         <slides-item
-                            v-for="(slide, key) in feed.data"
+                            v-for="(slide, key) in feedsWithStarredProperty"
                             :active="key + minValue === slideShift"
                             :key="slide.id"
                             :story="slide"
-                            @changeActive="changeActive"
-                            :starred="starred"
+                            @onChangeActive="changeActive"
+                            @onFollow="follow"
+                            :followingProp="slide.isStarred"
                         />
                     </div>
                 </div>
@@ -45,13 +46,13 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import { reactive } from 'vue'
 
 import { AppHeader } from '@/components/appHeader'
 import { AppButton } from '@/components/appButton'
 import { AppLogo } from '@/components/appLogo'
 import { SlidesItem } from '@/components/slidesItem'
 import { Icon } from '@/icons'
-import { reactive } from 'vue'
 export default {
     name: 'Stories',
     components: {
@@ -59,18 +60,20 @@ export default {
     },
     data () {
         return {
-            slideShift: 0
+            slideShift: 0,
+            feedsWithStarredProperty: []
         }
     },
     props: ['routeId'],
     computed: {
         ...mapState({
             feed: state => state.feed.feed,
-            starred: state => state.starred.starred
+            starred: state => state.starred.starred,
+            likes: state => state.likes.likes
         }),
         ...mapGetters({
-            storiesCount: 'feed/getFeedsCount'
-            // storiesCount: 'starred/getStarredCount'
+            storiesCount: 'feed/getFeedsCount',
+            isLikesStateInit: 'likes/isStateInit'
         }),
         styleSlideShift () {
             return reactive({
@@ -90,7 +93,10 @@ export default {
     methods: {
         ...mapActions({
             fetchRepos: 'feed/fetchRepos',
-            fetchStarred: 'starred/fetchStarred'
+            fetchStarred: 'starred/fetchStarred',
+            putLike: 'likes/putLike',
+            deleteLike: 'likes/deleteLike',
+            initLikes: 'likes/initLikes'
         }),
         initActiveSlide () {
             if (this.feed.data && this.routeId) {
@@ -99,6 +105,16 @@ export default {
                         this.slideShift = index + this.minValue
                     }
                 })
+            }
+        },
+        init () {
+            this.initActiveSlide()
+            if (this.feed.data && this.starred.data) {
+                this.feed.data.forEach(item => this.feedsWithStarredProperty.push({
+                    ...item,
+                    isStarred: this.starred.data.some(starredItem => starredItem.id === item.id)
+                }))
+                this.initLikes(this.feedsWithStarredProperty)
             }
         },
         moveLeft () {
@@ -116,6 +132,14 @@ export default {
             } else {
                 this.slideShift++
             }
+        },
+        follow (owner, repo) {
+            const currentLikesRepo = this.likes.data.find(item => item.owner === owner)
+            if (!currentLikesRepo || !currentLikesRepo.body) {
+                this.putLike({ owner, repo })
+            } else {
+                this.deleteLike({ owner, repo })
+            }
         }
     },
     created () {
@@ -123,10 +147,10 @@ export default {
             this.fetchRepos()
         }
         this.fetchStarred()
-        this.initActiveSlide()
+        this.init()
     },
     watch: {
-        'feed.data': 'initActiveSlide'
+        'feed.data': 'init'
     }
 }
 </script>

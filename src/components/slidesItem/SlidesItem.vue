@@ -15,7 +15,7 @@
             <div v-else-if="readme.data" class="slide-content" ref="readmeContainer" />
             <div v-else-if="readme.error && active">{{ readme.error }}</div>
         </div>
-        <app-button @click="toggleFollow" :disabled="!active" :class="['slide-button', {'following': following || likes.loading}]" :label="label">
+        <app-button @click="toggleFollow" :disabled="!active" :class="['slide-button', {'following': following || (likes.loading && active)}]" :label="label">
             <span v-if="likes.loading && active" class="button-loader"><icon class="button-loader" name="Loader"></icon></span>
         </app-button>
     </div>
@@ -37,21 +37,15 @@ export default {
         AppButton,
         Icon
     },
-    data () {
-        return {
-            following: this.starred.data.some(item => item === this.story)
-        }
-    },
-    props: ['story', 'active', 'starred'],
-    emits: ['changeActive'],
+    props: ['story', 'active', 'followingProp'],
+    emits: ['onChangeActive', 'onFollow'],
     computed: {
         ...mapState({
             readme: state => state.readme.readme,
             likes: state => state.likes.likes
         }),
         ...mapGetters({
-            isReadmeStateInit: 'readme/isStateInit',
-            isLikesStateInit: 'likes/isStateInit'
+            isReadmeStateInit: 'readme/isStateInit'
         }),
         label () {
             if (this.likes.loading && this.active) {
@@ -61,16 +55,20 @@ export default {
             } else {
                 return 'follow'
             }
+        },
+        following () {
+            if (this.story) {
+                return this.likes.data.find(item => item.owner === this.story.owner.login)?.body
+            }
+            return this.followingProp
         }
     },
     methods: {
         ...mapActions({
-            fetchReadme: 'readme/fetchReadme',
-            putLike: 'likes/putLike',
-            deleteLike: 'likes/deleteLike'
+            fetchReadme: 'readme/fetchReadme'
         }),
         onFinish () {
-            this.$emit('changeActive')
+            this.$emit('onChangeActive')
         },
         getReadme () {
             if (this.story) {
@@ -87,22 +85,7 @@ export default {
             }
         },
         toggleFollow () {
-            this.following = !this.following
-        },
-        setCurrentFollowStatus () {
-            if (!this.story) return
-
-            if (!this.likes.data.find(item => item.owner === this.story.owner.login)) {
-                this.$store.commit('likes/SET_OWNER', this.story.owner.login)
-                this.$store.commit('likes/SET_REPO', this.story.name)
-            }
-            if (this.isLikesStateInit) {
-                if (this.following) {
-                    this.putLike()
-                } else {
-                    this.deleteLike()
-                }
-            }
+            this.$emit('onFollow', this.story.owner.login, this.story.name)
         }
     },
     created () {
@@ -114,9 +97,6 @@ export default {
     watch: {
         active () {
             this.getReadme()
-        },
-        following () {
-            this.setCurrentFollowStatus()
         }
     }
 

@@ -6,7 +6,7 @@
             </router-link>
         </li>
         <li class="top-menu-item">
-            <router-link to="/" class="top-menu-link">
+            <router-link to="/profile" class="top-menu-link">
                 <img v-if="avatar" :src="avatar" alt="name" />
                 <icon v-else name="Andrew" />
             </router-link>

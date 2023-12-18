@@ -4,8 +4,6 @@ export const likes = {
     namespaced: true,
     state: {
         likes: {
-            owner: '',
-            repo: '',
             data: [],
             error: '',
             loading: false
@@ -23,7 +21,7 @@ export const likes = {
         SET_REPO (state, payload) {
             state.likes.repo = payload
         },
-        SET_LIKE (state, payload) {
+        SET_LIKES (state, payload) {
             state.likes.data = payload
         },
         SET_LIKES_LOADING (state, payload) {
@@ -34,44 +32,44 @@ export const likes = {
         }
     },
     actions: {
-        async putLike ({ commit, state }) {
+        initLikes ({ commit }, feeds) {
+            const likes = []
+            feeds.forEach(item => {
+                const likesItem = { owner: item.owner.login, repo: item.name, body: item.isStarred }
+                if (!likes.includes(likesItem)) {
+                    likes.push(likesItem)
+                }
+            })
+            commit('SET_LIKES', likes)
+        },
+        async putLike ({ commit, state }, { owner, repo }) {
             commit('SET_LIKES_LOADING', true)
             try {
-                const response = await api.likes.putLike(state.likes.owner, state.likes.repo)
-                console.log(response.status)
-                const dataCopy = state.likes.data.slice()
-                let dataItem = dataCopy.find(item => item.owner === state.likes.owner)
-                if (dataItem) {
-                    console.log('dfdf')
-                    dataItem.body = true
-                } else {
-                    dataItem = { owner: state.likes.owner, repo: state.likes.repo, body: true }
-                    dataCopy.push(dataItem)
+                const response = await api.likes.putLike(owner, repo)
+                if (response.status === 204) {
+                    const dataCopy = state.likes.data.slice()
+                    const dataItemIndex = dataCopy.findIndex(item => item.owner === owner)
+                    dataCopy.splice(dataItemIndex, 1, { owner, repo, body: true })
+                    commit('SET_LIKES', dataCopy)
                 }
-                console.log(dataCopy)
-                commit('SET_LIKE', dataCopy)
             } catch (e) {
-                commit('SET_LIKES_ERROR', 'не удалось получить данные')
+                commit('SET_LIKES_ERROR', 'не удалось обновить данные')
             } finally {
                 commit('SET_LIKES_LOADING', false)
             }
         },
-        async deleteLike ({ commit, state }) {
+        async deleteLike ({ commit, state }, { owner, repo }) {
             commit('SET_LIKES_LOADING', true)
             try {
-                const response = await api.likes.deleteLike(state.owner, state.repo)
-                console.log(response.status)
-                const dataCopy = state.likes.data.slice()
-                let dataItem = dataCopy.find(item => item.owner === state.likes.owner)
-                if (dataItem) {
-                    dataItem.body = false
-                } else {
-                    dataItem = { owner: state.likes.owner, repo: state.likes.repo, body: false }
-                    dataCopy.push(dataItem)
+                const response = await api.likes.deleteLike(owner, repo)
+                if (response.status === 204) {
+                    const dataCopy = state.likes.data.slice()
+                    const dataItemIndex = dataCopy.findIndex(item => item.owner === owner)
+                    dataCopy.splice(dataItemIndex, 1, { owner, repo, body: false })
+                    commit('SET_LIKES', dataCopy)
                 }
-                commit('SET_LIKE', dataCopy)
             } catch (e) {
-                commit('SET_LIKES_ERROR', 'не удалось получить данные')
+                commit('SET_LIKES_ERROR', 'не удалось обновить данные')
             } finally {
                 commit('SET_LIKES_LOADING', false)
             }
