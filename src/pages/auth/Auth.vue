@@ -51,7 +51,7 @@ export default {
 
                 const { token } = await response.json()
                 localStorage.setItem('token', token)
-                window.location.href = '/'
+                this.$router.push({ name: 'main', params: {} })
             } catch (e) {
                 console.log(e)
             }
