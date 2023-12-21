@@ -3,7 +3,8 @@
     display: flex
     align-items: center
     flex-direction: row
-    height: 44px
+    height: 100%
+    width: 100%
     gap: 14px
     margin-bottom: 16px
 
@@ -30,6 +31,13 @@
         font-weight: 700
         letter-spacing: -0.1px
         color: #262626
+        &:not(:last-child) 
+            margin-bottom: 6px
+
+    .type
+        color: #9E9E9E
+        font-size: 12px
+        line-height: 16px
     
     &.in-stories
         flex-direction: column
@@ -52,4 +60,35 @@
             &:hover .avatar 
                 border-color: transparent 
             
+.user.stats
+    height: 90px
+
+    .name
+        margin-bottom: 10px
+    
+    .stats
+        display: flex
+        gap: 10px
+
+    .reports,
+    .watchers
+        font-size: 12px
+        letter-spacing: -0.1px
+
+    .count 
+        font-weight: 700
+        font-size: 14px
+        letter-spacing: -0.3px
+
+    a
+        text-decoration: underline
+        color: #31AE54
+
+.follow-button 
+    margin-left: auto
+    font-size: 16px
+    letter-spacing: -0.15px
+    height: 42px
+    padding-inline: 20px
+    min-width: 124px
         

@@ -10,8 +10,8 @@ export default () => {
     const setFollowersUser = (user) => store.commit('users/SET_FOLLOWERS_USER', user)
     const fetchUsers = () => store.dispatch('users/fetchUsers')
     const fetchFollowers = () => store.dispatch('users/fetchFollowers')
-    const putFollowing = () => store.dispatch('users/putFollowing')
-    const deleteFollowing = () => store.dispatch('users/deleteFollowing')
+    const putFollowing = (user) => store.dispatch('users/putFollowing', user)
+    const deleteFollowing = (user) => store.dispatch('users/deleteFollowing', user)
 
     watchEffect(() => {
         fetchUsers()

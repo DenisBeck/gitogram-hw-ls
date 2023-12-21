@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { IssuesToggler } from '../issuesToggler'
+import { IssuesToggler } from '@/components/issuesToggler'
 
 describe('IssuesToggler', () => {
     it('При клике изменяется надпись', async () => {

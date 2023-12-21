@@ -15,11 +15,6 @@ export const users = {
             loading: false
         }
     },
-    getters: {
-        getFollowersCount (state) {
-            return state.followers.data?.length || 0
-        }
-    },
     mutations: {
         SET_USERS_DATA (state, payload) {
             state.users.data = payload
@@ -66,10 +61,10 @@ export const users = {
                 commit('SET_FOLLOWERS_LOADING', false)
             }
         },
-        async putFollowing ({ commit }, { user }) {
+        async putFollowing ({ commit }, { login }) {
             commit('SET_FOLLOWERS_LOADING', true)
             try {
-                const response = await api.likes.putLike(user)
+                const response = await api.followers.putFollowing(login)
                 if (response.status === 204) {
                     console.log('following success')
                 }
@@ -79,10 +74,10 @@ export const users = {
                 commit('SET_FOLLOWERS_LOADING', false)
             }
         },
-        async deleteFollowing ({ commit }, { user }) {
+        async deleteFollowing ({ commit }, { login }) {
             commit('SET_FOLLOWERS_LOADING', true)
             try {
-                const response = await api.followers.deleteFollowing(user)
+                const response = await api.followers.deleteFollowing(login)
                 if (response.status === 204) {
                     console.log('unfollow success')
                 }

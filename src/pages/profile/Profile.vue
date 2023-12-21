@@ -3,22 +3,21 @@
         <app-header>
             <template #top-header>
                 <app-logo />
-                <top-links-list v-if="isAuth" :avatar="user.data.avatar_url" />
-                <top-links-list v-else />
+                <top-links-list :avatar="user.data.avatar_url" />
             </template>
         </app-header>
         <main class="main">
             <div class="container">
                 <aside class="profile-info">
-                    <h2 class="profile-title">My profile</h2>
-                    <users-item stats v-if="isAuth" :name="user.data.login" :src="user.data.avatar_url" />
+                    <h2 class="profile-title title">My profile</h2>
+                    <users-item :stats="{followers: user.data.followers, following: user.data.following}" :name="user.data.login" :src="user.data.avatar_url" />
                 </aside>
                 <div class="profile-repos">
                     <div class="profile-repos-header">
-                        <h2 class="profile-repos-title">Repositories</h2>
-                        <div class="profile-repos-count">{{ myReposCount }}</div>
+                        <h2 class="profile-repos-title title">Repositories</h2>
+                        <div class="profile-repos-count">{{ myRepos.data.length || 0 }}</div>
                     </div>
-                    <div v-if="myRepos.loading" class="profile-loading"><icon name="Spinner" /></div>
+                    <div v-if="myRepos.loading" class="loading"><icon name="Spinner" /></div>
                     <div v-else-if="myRepos.data" class="feeds-list">
                         <feeds-item v-for="myRepo in myRepos.data" :feed="myRepo" :key="myRepo.id" class="feed">
                             <template #feed-repo>
@@ -42,8 +41,8 @@ import { AppLogo } from '@/components/appLogo'
 import { FeedsItem } from '@/components/feedsItem'
 import { Icon } from '@/icons'
 
-import useMyRepos from '@/components/composables/useMyRepos'
-import useUser from '@/components/composables/useUser'
+import useMyRepos from '@/composables/useMyRepos'
+import useUser from '@/composables/useUser'
 
 export default {
     name: 'Profile',
@@ -92,3 +91,4 @@ export default {
 <style lang="sass" src="./profile.sass" scoped>
 
 </style>
+@/composables/useMyRepos@/composables/useUser

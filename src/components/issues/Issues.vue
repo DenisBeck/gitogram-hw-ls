@@ -12,8 +12,8 @@
                     <div /><div /><div />
                 </div>
             </div>
-            <div v-else-if="issues?.data" class="issues-content" data-testid="issues-content">
-                <div v-for="issue in issues.data" :key="issue.id" class="issues-item" data-testid="issues-item">
+            <div v-else-if="issues?.data" class="issues-content">
+                <div v-for="issue in issues.data" :key="issue.id" class="issues-item">
                     <p class="issues-title"><span class="issues-user">{{ issue.user?.login }}</span> {{ issue.title }}</p>
                 </div>
             </div>

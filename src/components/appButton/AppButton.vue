@@ -1,5 +1,5 @@
 <template>
-    <button :disabled="disabled" @click="handleClick" :class="['app-button', {'close': close}]">
+    <button :disabled="disabled" @click.prevent="handleClick" :class="['app-button', {'close': close}]">
         {{ label }}
         <slot></slot>
     </button>

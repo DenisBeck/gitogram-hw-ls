@@ -133,12 +133,12 @@ export default {
                 this.slideShift++
             }
         },
-        follow (owner, repo) {
+        async follow (owner, repo) {
             const currentLikesRepo = this.likes.data.find(item => item.owner === owner)
             if (!currentLikesRepo || !currentLikesRepo.body) {
-                this.putLike({ owner, repo })
+                await this.putLike({ owner, repo })
             } else {
-                this.deleteLike({ owner, repo })
+                await this.deleteLike({ owner, repo })
             }
         }
     },

@@ -11,15 +11,21 @@ describe('Issues', () => {
         },
         {
             user: {
-                login: 'user1'
+                login: 'user2'
             },
             title: 'title2'
         },
         {
             user: {
-                login: 'user1'
+                login: 'user3'
             },
             title: 'title3'
+        },
+        {
+            user: {
+                login: 'user4'
+            },
+            title: 'title4'
         }
     ]
 
@@ -31,23 +37,21 @@ describe('Issues', () => {
         expect(wrapper.emitted().requestIssues.length).toBe(1)
     })
 
-    // it('Количество элементов совпадает', async () => {
-    //     const wrapper = mount(Issues, {
-    //         propsData: {
-    //             issues: {
-    //                 data: issues
-    //             }
-    //         }
-    //     })
+    it('Количество элементов совпадает', async () => {
+        const wrapper = mount(Issues, {
+            propsData: {
+                issues: {
+                    data: issues
+                }
+            }
+        })
 
-    //     expect(wrapper.find('.issues-content').exists()).toBe(false)
+        await wrapper.find('.toggler-wrapper button').trigger('click')
 
-    //     await wrapper.find('.toggler-wrapper button').trigger('click')
+        expect(wrapper.find('.issues-content').exists()).toBe(true)
 
-    //     expect(wrapper.find('.issues-content').exists()).toBe(true)
-
-    //     expect(wrapper.findAll('.issues-item').length).toBe(3)
-    // })
+        expect(wrapper.findAll('.issues-item').length).toBe(4)
+    })
 
     it('Повторные запросы не происходят', async () => {
         const wrapper = mount(Issues, {

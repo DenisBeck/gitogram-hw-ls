@@ -1,26 +1,37 @@
 <template>
-    <div :class="[{[inStories]: isInStories}, 'user']">
+    <div :class="[{[inStories]: isInStories}, {'stats': stats}, 'user']">
         <div class="avatar">
             <img v-if="src" :src="src" :alt="name" />
+            <img v-else-if="user" :src="user.avatar_url" :alt="user.login" />
             <icon v-else :name="avatar" />
         </div>
         <div class="info">
-            <div class="name">{{ name }}</div>
+            <div v-if="user" class="name">{{ user.login }}</div>
+            <div v-else class="name">{{ name }}</div>
+            <div v-if="user" class="type">{{ user.type }}</div>
             <div v-if="stats" class="stats">
-                <div class="reposts">54 reposts</div>
-                <div class="watchers">834 <router-link to="/followers">watchers</router-link></div>
+                <span class="reports"><span class="count">{{ stats.followers }}</span> watchers</span>
+                <span class="watchers"><span class="count">{{ stats.following }}</span> <router-link to="/followers">watchings</router-link></span>
             </div>
         </div>
+        <app-button v-if="user" @click="toggleHandler" :class="['follow-button', {'following': user.followed}]" :label="label">
+            <span v-if="loading" class="button-loader"><icon class="button-loader" name="Loader"></icon></span>
+        </app-button>
     </div>
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+
 import { Icon } from '@/icons'
+import { AppButton } from '../appButton'
 export default {
     name: 'users-item',
     components: {
-        Icon
+        Icon,
+        AppButton
     },
+    emits: ['followUser'],
     props: {
         avatar: {
             type: String,
@@ -28,7 +39,7 @@ export default {
         },
         name: {
             type: String,
-            required: true
+            default: 'Andrew'
         },
         isInStories: {
             type: Boolean
@@ -37,14 +48,41 @@ export default {
             type: String
         },
         stats: {
+            type: Object
+        },
+        user: {
+            type: Object
+        },
+        loading: {
             type: Boolean
         }
     },
-    data () {
+    setup (props, { emit }) {
+        const inStories = ref('in-stories')
+
+        const toggleHandler = () => {
+            emit('followUser', props.user)
+        }
+        const label = computed(() => {
+            if (props.loading) {
+                return ''
+            }
+            if (props.user.followed) {
+                return 'unfollow'
+            } else {
+                return 'follow'
+            }
+        })
+
+        // console.log(props.user)
+
         return {
-            inStories: 'in-stories'
+            inStories,
+            toggleHandler,
+            label
         }
     }
+
 }
 </script>
 

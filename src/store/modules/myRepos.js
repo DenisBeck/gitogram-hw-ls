@@ -10,11 +10,6 @@ export const myRepos = {
             error: ''
         }
     },
-    getters: {
-        getMyReposCount (state) {
-            return state.myRepos.data?.length || 0
-        }
-    },
     mutations: {
         SET_MY_REPOS_USER (state, payload) {
             state.myRepos.user = payload

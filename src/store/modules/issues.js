@@ -3,13 +3,7 @@ import * as api from '@/api'
 export const issues = {
     namespaced: true,
     state: {
-        issues: {
-            owner: '',
-            repo: '',
-            data: [],
-            error: '',
-            loading: false
-        }
+        issues: []
     },
     getters: {
         isStateInit (state) {
@@ -17,35 +11,43 @@ export const issues = {
         }
     },
     mutations: {
-        SET_OWNER (state, payload) {
-            state.issues.owner = payload
-        },
         SET_REPO (state, payload) {
-            state.issues.repo = payload
+            if (!state.issues.some(item => item.repo === payload)) {
+                state.issues.push({ repo: payload })
+            }
         },
         SET_ISSUES_DATA (state, payload) {
-            state.issues.data = [...state.issues.data, payload]
-            // state.issues.data = payload
+            const item = state.issues.find(item => item.repo === payload.repo)
+            if (item) {
+                item.data = payload.data
+            }
         },
         SET_ISSUES_LOADING (state, payload) {
-            state.issues.loading = payload
+            const item = state.issues.find(item => item.repo === payload.repo)
+            if (item) {
+                item.loading = payload.loading
+            }
         },
         SET_ISSUES_ERROR (state, payload) {
-            state.issues.error = payload
+            const item = state.issues.find(item => item.repo === payload.repo)
+            if (item) {
+                item.error = payload.error
+            }
         }
     },
     actions: {
-        async fetchIssues ({ commit, state }) {
-            commit('SET_ISSUES_LOADING', true)
+        async fetchIssues ({ commit }, feed) {
+            const repo = feed.name
+            const owner = feed.owner.login
+            commit('SET_ISSUES_LOADING', { repo, loading: true })
             try {
-                const response = await api.issues.getIssues(state.issues.owner, state.issues.repo)
-                const responseData = { owner: state.issues.owner, repo: state.issues.repo, body: response.data }
-                commit('SET_ISSUES_DATA', responseData)
+                const response = await api.issues.getIssues(owner, repo)
+                commit('SET_ISSUES_DATA', { repo, data: response.data })
             } catch (e) {
                 console.log(e)
-                commit('SET_ISSUES_ERROR', 'не удалось получить данные')
+                commit('SET_ISSUES_ERROR', { repo, error: 'не удалось получить данные' })
             } finally {
-                commit('SET_ISSUES_LOADING', false)
+                commit('SET_ISSUES_LOADING', { repo, loading: false })
             }
         }
     }

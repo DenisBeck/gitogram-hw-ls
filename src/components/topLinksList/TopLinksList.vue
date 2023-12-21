@@ -32,6 +32,9 @@ export default {
             localStorage.removeItem('token')
             window.location.reload()
         }
+    },
+    created () {
+        console.log(this.avatar)
     }
 }
 </script>

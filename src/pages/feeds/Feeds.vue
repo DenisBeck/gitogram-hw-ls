@@ -18,7 +18,7 @@
         </app-header>
         <main class="main">
             <div class="container">
-                <div v-if="starred.loading" class="feeds-loading"><icon name="Spinner" /></div>
+                <div v-if="starred.loading" class="loading"><icon name="Spinner" /></div>
                 <div v-else-if="starred.data" class="feeds-list">
                     <feeds-item main v-for="starred in starred.data" :feed="starred" :key="starred.id" class="feed">
                         <template #feed-repo>

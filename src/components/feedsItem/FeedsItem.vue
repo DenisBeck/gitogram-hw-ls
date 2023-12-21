@@ -8,13 +8,13 @@
                 :forks="feed.forks_count"
             />
         </div>
-        <issues v-if="feed" :feed="feed" @requestIssues="requestIssues" :issues="issues" />
+        <issues v-if="feed && main" :feed="feed" @requestIssues="requestIssues" :issues="issues" />
         <div v-if="main" class="feed-date">{{ formatDate }}</div>
     </div>
 </template>
 
 <script>
-import { computed, nextTick } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 import { RepoInfo } from '@/components/repoInfo'
@@ -34,20 +34,16 @@ export default {
     },
     setup (props) {
         const store = useStore()
-        const issues = computed(() => store.state.issues.issues)
-        const fetchIssues = () => store.dispatch('issues/fetchIssues')
+        const issues = computed(() => store.state.issues.issues.find(item => item.repo === props.feed.name))
+        const fetchIssues = () => store.dispatch('issues/fetchIssues', props.feed)
         const formatDate = computed(() => {
             const date = new Date(props.feed.created_at)
             return `${date.getDate()} ${date.toLocaleString('en', { month: 'long' })}`
         })
 
         const requestIssues = async () => {
-            store?.commit('issues/SET_OWNER', props.feed.owner.login)
             store?.commit('issues/SET_REPO', props.feed.name)
             await fetchIssues()
-            nextTick(() => {
-                issues.value.data = issues.value.data.find(item => item.owner === props.feed.owner.login).body
-            })
         }
 
         return {
