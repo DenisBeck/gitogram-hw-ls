@@ -10,8 +10,8 @@
             <div v-else class="name">{{ name }}</div>
             <div v-if="user" class="type">{{ user.type }}</div>
             <div v-if="stats" class="stats">
-                <span class="reports"><span class="count">{{ stats.followers }}</span> watchers</span>
-                <span class="watchers"><span class="count">{{ stats.following }}</span> <router-link to="/followers">watchings</router-link></span>
+                <span class="reposts"><span class="count">{{ stats.reposts }}</span> <router-link activeClass="active" to="/profile">reposts</router-link></span>
+                <span class="watchers"><span class="count">{{ stats.following }}</span> <router-link activeClass="active" to="/followers">watchings</router-link></span>
             </div>
         </div>
         <app-button v-if="user" @click="toggleHandler" :class="['follow-button', {'following': user.followed}]" :label="label">

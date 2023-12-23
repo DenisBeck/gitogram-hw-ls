@@ -10,7 +10,7 @@
             <div class="container">
                 <aside class="profile-info">
                     <h2 class="profile-title title">My profile</h2>
-                    <users-item :stats="{followers: user.data.followers, following: followers.data.length}" :name="user.data.login" :src="user.data.avatar_url" />
+                    <users-item :stats="{reposts: myRepos.data.length, following: followers.data.length}" :name="user.data.login" :src="user.data.avatar_url" />
                 </aside>
                 <div class="profile-repos">
                     <div class="profile-repos-header">
@@ -43,7 +43,8 @@ import { Icon } from '@/icons'
 
 import useFollowers from '@/composables/useFollowers'
 import useUser from '@/composables/useUser'
-import { ref } from 'vue'
+import { ref, router } from 'vue'
+import useMyRepos from '@/composables/useMyRepos'
 
 export default {
     name: 'Followers',
@@ -72,6 +73,11 @@ export default {
             isAuth
         } = useUser()
 
+        const {
+            myRepos,
+            fetchMyRepos
+        } = useMyRepos()
+
         const currentUser = ref(null)
         const followUser = async (user) => {
             currentUser.value = user
@@ -95,7 +101,10 @@ export default {
             allUsers.value = allUsers.value.map(item => ({ ...item, followed: followers.data.includes(item) }))
         }
 
+        console.log(router)
+
         await fetchUser()
+        await fetchMyRepos()
         if (user.data) {
             setFollowersUser(user.data.login)
             setAllUsers()
@@ -117,7 +126,10 @@ export default {
 
             allUsers,
             followUser,
-            currentUser
+            currentUser,
+
+            myRepos,
+            fetchMyRepos
         }
     }
 }

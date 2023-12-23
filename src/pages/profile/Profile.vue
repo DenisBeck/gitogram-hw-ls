@@ -10,7 +10,7 @@
             <div class="container">
                 <aside class="profile-info">
                     <h2 class="profile-title title">My profile</h2>
-                    <users-item :stats="{followers: user.data.followers, following: user.data.following}" :name="user.data.login" :src="user.data.avatar_url" />
+                    <users-item :stats="{reposts: myRepos.data.length, following: user.data.following}" :name="user.data.login" :src="user.data.avatar_url" />
                 </aside>
                 <div class="profile-repos">
                     <div class="profile-repos-header">
